@@ -1,0 +1,63 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>GaaS Data Policy Map</title>
+    <script src="{% static 'my_app/js/echarts.min.js' %}"></script>
+    <style>
+        body { margin: 0; padding: 20px; font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif; background-color: #f8f9fa; }
+        h2 { margin-bottom: 20px; color: #212529; }
+        
+        /* Control Panel Layout Grid */
+        .filter-bar { display: flex; align-items: center; gap: 25px; background: #fff; padding: 15px; border-radius: 8px; border: 1px solid #dee2e6; margin-bottom: 15px; }
+        .control-group { display: flex; align-items: center; gap: 10px; }
+        label { font-weight: bold; font-size: 14px; color: #495057; }
+        
+        /* Input Styles */
+        .search-control { font-size: 15px; padding: 6px 12px; border-radius: 4px; border: 1px solid #ced4da; width: 250px; outline: none; transition: border-color 0.15s ease-in-out; }
+        .search-control:focus { border-color: #007fff; box-shadow: 0 0 0 2px rgba(0, 127, 255, 0.2); }
+        .select-control { font-size: 15px; padding: 6px 12px; border-radius: 4px; border: 1px solid #ced4da; background-color: white; cursor: pointer; }
+        
+        /* Graph Viewport Window */
+        #canvas-container { background: #fff; border: 1px solid #dee2e6; border-radius: 8px; padding: 15px; }
+        #main-graph { width: 100%; height: 620px; }
+        .helper-text { margin: 0 0 16px; color: #5f6b7a; font-size: 14px; }
+    </style>
+</head>
+<body>
+
+    <h2>Data Policy Governance Map</h2>
+    <p class="helper-text">Click any node to open a dedicated summary page for that producer, consumer, or endpoint.</p>
+    
+    <div class="filter-bar">
+        <div class="control-group">
+            <label for="entity-search">Text Search:</label>
+            <input type="text" id="entity-search" class="search-control" placeholder="Type name or ID keywords..." autocomplete="off">
+        </div>
+        
+        <div class="control-group">
+            <label for="role-filter">Filter by Role:</label>
+            <select id="role-filter" class="select-control">
+                <option value="ALL">All Roles</option>
+                <option value="0">Producers Only</option>
+                <option value="1">Endpoints Only</option>
+                <option value="2">Consumers Only</option>
+            </select>
+        </div>
+    </div>
+    
+    <div id="canvas-container">
+        <div
+            id="main-graph"
+            data-api-url="{% url 'graph_data_api' %}"
+            data-producer-url="/governance-map/producers/"
+            data-consumer-url="/governance-map/consumers/"
+            data-endpoint-url="/governance-map/endpoints/"
+        ></div>
+    </div>
+
+    <script src="{% static 'my_app/js/gateway_graph.js' %}"></script>
+</body>
+</html>

@@ -1,0 +1,351 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{{ title }} - Data Policy Map</title>
+    <style>
+        :root {
+            --bg: #f4f6f8;
+            --panel: #ffffff;
+            --text: #172033;
+            --muted: #667085;
+            --line: #d7dde5;
+            --accent: #0f62fe;
+            --accent-soft: #e8f0ff;
+            --good: #0f9d58;
+            --warn: #c77700;
+            --shadow: 0 18px 40px rgba(16, 24, 40, 0.08);
+        }
+
+        * { box-sizing: border-box; }
+
+        body {
+            margin: 0;
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Arial, sans-serif;
+            background:
+                radial-gradient(circle at top left, rgba(15, 98, 254, 0.09), transparent 26%),
+                linear-gradient(180deg, #f8fafc 0%, var(--bg) 100%);
+            color: var(--text);
+        }
+
+        .page {
+            max-width: 1180px;
+            margin: 0 auto;
+            padding: 28px 20px 40px;
+        }
+
+        .topbar {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            gap: 16px;
+            margin-bottom: 20px;
+        }
+
+        .back-link {
+            text-decoration: none;
+            color: var(--accent);
+            font-weight: 600;
+            font-size: 14px;
+        }
+
+        .eyebrow {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            padding: 8px 12px;
+            border-radius: 999px;
+            background: var(--accent-soft);
+            color: var(--accent);
+            font-size: 12px;
+            font-weight: 700;
+            letter-spacing: 0.03em;
+            text-transform: uppercase;
+        }
+
+        .hero {
+            background: var(--panel);
+            border: 1px solid var(--line);
+            border-radius: 24px;
+            padding: 28px;
+            box-shadow: var(--shadow);
+            margin-bottom: 20px;
+        }
+
+        .hero-grid {
+            display: grid;
+            grid-template-columns: minmax(0, 1.6fr) minmax(280px, 1fr);
+            gap: 22px;
+            align-items: start;
+        }
+
+        h1 {
+            margin: 14px 0 10px;
+            font-size: clamp(30px, 3vw, 44px);
+            line-height: 1.08;
+            letter-spacing: -0.03em;
+        }
+
+        .subtext {
+            margin: 0;
+            font-size: 16px;
+            line-height: 1.6;
+            color: var(--muted);
+            max-width: 62ch;
+        }
+
+        .identity-card {
+            border-radius: 20px;
+            background: linear-gradient(180deg, #13213f 0%, #1d315e 100%);
+            color: white;
+            padding: 22px;
+            min-height: 100%;
+        }
+
+        .identity-card h2 {
+            margin: 0 0 8px;
+            font-size: 18px;
+        }
+
+        .identity-meta {
+            color: rgba(255, 255, 255, 0.78);
+            font-size: 14px;
+            line-height: 1.6;
+            margin: 0;
+        }
+
+        .summary-grid {
+            display: grid;
+            grid-template-columns: repeat(3, minmax(0, 1fr));
+            gap: 14px;
+            margin-top: 22px;
+        }
+
+        .summary-card {
+            background: #f8fbff;
+            border: 1px solid var(--line);
+            border-radius: 18px;
+            padding: 18px;
+        }
+
+        .summary-card .label {
+            display: block;
+            color: var(--muted);
+            font-size: 13px;
+            margin-bottom: 10px;
+        }
+
+        .summary-card .value {
+            font-size: 24px;
+            font-weight: 700;
+            letter-spacing: -0.02em;
+        }
+
+        .content-grid {
+            display: grid;
+            grid-template-columns: minmax(0, 1.25fr) minmax(0, 0.95fr);
+            gap: 20px;
+        }
+
+        .panel {
+            background: var(--panel);
+            border: 1px solid var(--line);
+            border-radius: 22px;
+            box-shadow: var(--shadow);
+            overflow: hidden;
+        }
+
+        .panel-header {
+            padding: 20px 22px 14px;
+            border-bottom: 1px solid var(--line);
+        }
+
+        .panel-header h3 {
+            margin: 0 0 6px;
+            font-size: 20px;
+        }
+
+        .panel-header p {
+            margin: 0;
+            color: var(--muted);
+            font-size: 14px;
+        }
+
+        .panel-body {
+            padding: 18px 22px 22px;
+        }
+
+        .item-list {
+            display: grid;
+            gap: 12px;
+        }
+
+        .item {
+            border: 1px solid var(--line);
+            border-radius: 16px;
+            padding: 16px;
+            background: #fbfcfe;
+        }
+
+        .item-title {
+            margin: 0 0 6px;
+            font-size: 16px;
+            font-weight: 700;
+        }
+
+        .item-detail {
+            margin: 0;
+            color: var(--muted);
+            line-height: 1.55;
+            font-size: 14px;
+        }
+
+        .detail-grid {
+            display: grid;
+            gap: 16px;
+        }
+
+        .detail-section {
+            background: #fff;
+            border: 1px solid var(--line);
+            border-radius: 18px;
+            padding: 18px;
+        }
+
+        .detail-section h4 {
+            margin: 0 0 12px;
+            font-size: 16px;
+        }
+
+        .detail-row {
+            display: flex;
+            justify-content: space-between;
+            gap: 18px;
+            padding: 12px 0;
+            border-top: 1px solid #edf1f5;
+            font-size: 14px;
+        }
+
+        .detail-row:first-of-type {
+            border-top: 0;
+            padding-top: 0;
+        }
+
+        .detail-row .key {
+            color: var(--muted);
+            min-width: 120px;
+        }
+
+        .detail-row .value {
+            text-align: right;
+            font-weight: 600;
+            color: var(--text);
+        }
+
+        .footer-note {
+            margin-top: 20px;
+            color: var(--muted);
+            font-size: 13px;
+        }
+
+        @media (max-width: 960px) {
+            .hero-grid,
+            .content-grid,
+            .summary-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .topbar {
+                align-items: flex-start;
+                flex-direction: column;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="page">
+        <div class="topbar">
+            <a class="back-link" href="{% url 'graph_page' %}">Back to relationship diagram</a>
+            <span class="eyebrow">{{ badge }}</span>
+        </div>
+
+        <section class="hero">
+            <div class="hero-grid">
+                <div>
+                    <p class="eyebrow">{{ entity_type|capfirst }} overview</p>
+                    <h1>{{ title }}</h1>
+                    <p class="subtext">{{ subtitle }}</p>
+                </div>
+                <aside class="identity-card">
+                    <h2>{{ entity_name }}</h2>
+                    <p class="identity-meta">Reference ID: {{ entity_id }}</p>
+                    <p class="identity-meta">This is a sample summary page designed for non-technical review and demonstration purposes.</p>
+                </aside>
+            </div>
+
+            <div class="summary-grid">
+                {% for item in summary %}
+                    <div class="summary-card">
+                        <span class="label">{{ item.label }}</span>
+                        <div class="value">{{ item.value }}</div>
+                    </div>
+                {% endfor %}
+            </div>
+        </section>
+
+        <section class="content-grid">
+            <article class="panel">
+                <div class="panel-header">
+                    <h3>{{ primary_panel_title }}</h3>
+                    <p>Quick summary of the most important linked records.</p>
+                </div>
+                <div class="panel-body">
+                    <div class="item-list">
+                        {% for item in primary_panel_items %}
+                            <div class="item">
+                                <p class="item-title">{{ item.title }}</p>
+                                <p class="item-detail">{{ item.detail }}</p>
+                            </div>
+                        {% endfor %}
+                    </div>
+                </div>
+            </article>
+
+            <aside class="panel">
+                <div class="panel-header">
+                    <h3>{{ secondary_panel_title }}</h3>
+                    <p>Readable history and status information.</p>
+                </div>
+                <div class="panel-body">
+                    <div class="item-list">
+                        {% for item in secondary_panel_items %}
+                            <div class="item">
+                                <p class="item-title">{{ item.title }}</p>
+                                <p class="item-detail">{{ item.detail }}</p>
+                            </div>
+                        {% endfor %}
+                    </div>
+                </div>
+            </aside>
+        </section>
+
+        <section class="detail-grid" style="margin-top: 20px;">
+            {% for section in detail_sections %}
+                <div class="detail-section">
+                    <h4>{{ section.title }}</h4>
+                    {% for row in section.rows %}
+                        <div class="detail-row">
+                            <div class="key">{{ row.0 }}</div>
+                            <div class="value">{{ row.1 }}</div>
+                        </div>
+                    {% endfor %}
+                </div>
+            {% endfor %}
+        </section>
+
+        <p class="footer-note">All values on this page are sample content only and can be replaced with real catalog data later.</p>
+    </div>
+</body>
+</html>
